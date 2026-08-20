@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Diretorio/css/style.css">
+    <link rel="icon" href="./Diretorio/img/icon.png" type="image/x-icon">
+    <title>D&D - Diário de Bordo</title>
+</head>
+<body>
+
+    <header class="topbar">
+        <div>
+            <h1>Ficha de Personagem</h1>
+        </div>
+
+        <div class="top-actions">
+            <button type="button" id="saveBtn">💾 Salvar</button>
+            <button type="button" id="clearBtn" class="danger">🗑 Limpar</button>
+        </div>
+    </header>
+
+    <main class="sheet">
+
+        <!-- IDENTIDADE + RETRATO -->
+        <section class="identity-layout">
+
+            <!-- IDENTIDADE -->
+            <div class="card identity">
+
+                <h2>Identidade</h2>
+
+                <div class="grid grid-4">
+
+                    <div class="field large">
+                        <label>Nome do personagem</label>
+                        <input type="text" id="characterName">
+                    </div>
+
+                    <div class="field">
+                        <label>Classe</label>
+                        <input type="text" id="className">
+                    </div>
+
+                    <div class="field small">
+                        <label>Nível</label>
+                        <input type="number" id="level" min="1" max="20" value="1">
+                    </div>
+
+                    <div class="field">
+                        <label>Raça / Espécie</label>
+                        <input type="text" id="race">
+                    </div>
+
+                    <div class="field">
+                        <label>Antecedente</label>
+                        <input type="text" id="background">
+                    </div>
+
+                    <div class="field">
+                        <label>Alinhamento</label>
+                        <input type="text" id="alignment">
+                    </div>
+
+                    <div class="field">
+                        <label>Jogador</label>
+                        <input type="text" id="player">
+                    </div>
+
+                    <div class="field">
+                        <label>XP</label>
+                        <input type="number" id="xp" min="0">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RETRATO -->
+            <div class="card character-portrait">
+
+                <h2>Retrato</h2>
+
+                <div class="portrait-container">
+
+                    <img id="characterImage" src="" alt="Retrato do personagem">
+
+                    <div id="portraitPlaceholder">
+                        <span>⚔</span>
+                        <p>Sem imagem</p>
+                    </div>
+
+                </div>
+
+                <label for="imageUpload" class="upload-button">
+                    📷 Escolher imagem
+                </label>
+
+                <input type="file" id="imageUpload" accept="image/*" hidden>
+
+                <button type="button" id="removeImage" class="remove-image">
+                    Remover imagem
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- ATRIBUTOS -->
+        <section class="card">
+
+            <div class="section-title">
+                <h2>Atributos</h2>
+                <span>Bônus de Proficiência: <strong id="proficiencyBonus">+2</strong></span>
+            </div>
+
+            <div class="ability-grid">
+
+                <div class="ability">
+                    <h3>FORÇA</h3>
+
+                    <input type="number" class="ability-score" id="strength" min="1" max="30" value="10">
+
+                    <div class="modifier" id="strengthMod">+0</div>
+                </div>
+
+                <div class="ability">
+                    <h3>DESTREZA</h3>
+
+                    <input type="number" class="ability-score" id="dexterity" min="1" max="30" value="10">
+
+                    <div class="modifier" id="dexterityMod">+0</div>
+                </div>
+
+                <div class="ability">
+                    <h3>CONSTITUIÇÃO</h3>
+
+                    <input type="number" class="ability-score" id="constitution" min="1" max="30" value="10">
+
+                    <div class="modifier" id="constitutionMod">+0</div>
+                </div>
+
+                <div class="ability">
+                    <h3>INTELIGÊNCIA</h3>
+
+                    <input type="number" class="ability-score" id="intelligence" min="1" max="30" value="10">
+
+                    <div class="modifier" id="intelligenceMod">+0</div>
+                </div>
+
+                <div class="ability">
+                    <h3>SABEDORIA</h3>
+
+                    <input type="number" class="ability-score" id="wisdom" min="1" max="30" value="10">
+
+                    <div class="modifier" id="wisdomMod">+0</div>
+                </div>
+
+                <div class="ability">
+                    <h3>CARISMA</h3>
+
+                    <input type="number" class="ability-score" id="charisma" min="1" max="30" value="10">
+
+                    <div class="modifier" id="charismaMod">+0</div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- COMBATE -->
+        <section class="card">
+
+            <h2>Combate</h2>
+
+            <div class="combat-grid">
+
+                <div class="combat-box">
+                    <label>Classe de Armadura</label>
+                    <input type="number" id="armorClass" value="10">
+                </div>
+
+                <div class="combat-box">
+                    <label>Iniciativa</label>
+                    <div class="calculated" id="initiative">+0</div>
+                </div>
+
+                <div class="combat-box">
+                    <label>Deslocamento</label>
+                    <input type="text" id="speed" value="9m">
+                </div>
+
+                <div class="combat-box">
+                    <label>PV Máximos</label>
+                    <input type="number" id="maxHp" value="10">
+                </div>
+
+                <div class="combat-box">
+                    <label>PV Atuais</label>
+                    <input type="number" id="currentHp" value="10">
+                </div>
+
+                <div class="combat-box">
+                    <label>PV Temporários</label>
+                    <input type="number" id="temporaryHp" value="0">
+                </div>
+
+                <div class="combat-box">
+                    <label>Dados de Vida</label>
+                    <input type="text" id="hitDice" placeholder="1d10">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SALVAGUARDAS E PERÍCIAS -->
+        <section class="two-columns">
+
+            <div class="card">
+
+                <h2>Salvaguardas</h2>
+
+                <div class="skills-list">
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="saving-prof" data-ability="strength">
+                        <span>Força</span>
+                        <strong id="save-strength">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="saving-prof" data-ability="dexterity">
+                        <span>Destreza</span>
+                        <strong id="save-dexterity">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="saving-prof" data-ability="constitution">
+                        <span>Constituição</span>
+                        <strong id="save-constitution">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="saving-prof" data-ability="intelligence">
+                        <span>Inteligência</span>
+                        <strong id="save-intelligence">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="saving-prof" data-ability="wisdom">
+                        <span>Sabedoria</span>
+                        <strong id="save-wisdom">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="saving-prof" data-ability="charisma">
+                        <span>Carisma</span>
+                        <strong id="save-charisma">+0</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>Perícias</h2>
+
+                <div class="skills-list">
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="dexterity" data-skill="acrobatics">
+                        <span>Acrobacia <small>(DES)</small></span>
+                        <strong id="skill-acrobatics">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="wisdom" data-skill="animalHandling">
+                        <span>Adestrar Animais <small>(SAB)</small></span>
+                        <strong id="skill-animalHandling">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="intelligence" data-skill="arcana">
+                        <span>Arcanismo <small>(INT)</small></span>
+                        <strong id="skill-arcana">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="strength" data-skill="athletics">
+                        <span>Atletismo <small>(FOR)</small></span>
+                        <strong id="skill-athletics">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="charisma" data-skill="performance">
+                        <span>Atuação <small>(CAR)</small></span>
+                        <strong id="skill-performance">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="charisma" data-skill="deception">
+                        <span>Enganação <small>(CAR)</small></span>
+                        <strong id="skill-deception">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="dexterity" data-skill="stealth">
+                        <span>Furtividade <small>(DES)</small></span>
+                        <strong id="skill-stealth">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="intelligence" data-skill="history">
+                        <span>História <small>(INT)</small></span>
+                        <strong id="skill-history">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="charisma" data-skill="intimidation">
+                        <span>Intimidação <small>(CAR)</small></span>
+                        <strong id="skill-intimidation">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="wisdom" data-skill="insight">
+                        <span>Intuição <small>(SAB)</small></span>
+                        <strong id="skill-insight">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="intelligence"
+                            data-skill="investigation">
+                        <span>Investigação <small>(INT)</small></span>
+                        <strong id="skill-investigation">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="wisdom" data-skill="medicine">
+                        <span>Medicina <small>(SAB)</small></span>
+                        <strong id="skill-medicine">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="intelligence" data-skill="nature">
+                        <span>Natureza <small>(INT)</small></span>
+                        <strong id="skill-nature">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="wisdom" data-skill="perception">
+                        <span>Percepção <small>(SAB)</small></span>
+                        <strong id="skill-perception">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="charisma" data-skill="persuasion">
+                        <span>Persuasão <small>(CAR)</small></span>
+                        <strong id="skill-persuasion">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="dexterity" data-skill="sleightOfHand">
+                        <span>Prestidigitação <small>(DES)</small></span>
+                        <strong id="skill-sleightOfHand">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="intelligence" data-skill="religion">
+                        <span>Religião <small>(INT)</small></span>
+                        <strong id="skill-religion">+0</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <input type="checkbox" class="skill-prof" data-ability="wisdom" data-skill="survival">
+                        <span>Sobrevivência <small>(SAB)</small></span>
+                        <strong id="skill-survival">+0</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ATAQUES -->
+        <section class="card">
+
+            <h2>Ataques</h2>
+
+            <div class="table-wrapper">
+
+                <table id="attacksTable">
+
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Bônus</th>
+                            <th>Dano / Tipo</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+
+                        <tr>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+
+                        <tr>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- EQUIPAMENTOS -->
+        <section class="card">
+
+            <h2>Equipamentos</h2>
+
+            <textarea id="equipment" rows="8"
+                placeholder="Espada longa&#10;Escudo&#10;Armadura de couro&#10;Mochila..."></textarea>
+
+            <div class="coins">
+
+                <div>
+                    <label>PC</label>
+                    <input type="number" id="cp" min="0">
+                </div>
+
+                <div>
+                    <label>PP</label>
+                    <input type="number" id="sp" min="0">
+                </div>
+
+                <div>
+                    <label>PE</label>
+                    <input type="number" id="ep" min="0">
+                </div>
+
+                <div>
+                    <label>PO</label>
+                    <input type="number" id="gp" min="0">
+                </div>
+
+                <div>
+                    <label>PL</label>
+                    <input type="number" id="pp" min="0">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CARACTERÍSTICAS -->
+        <section class="two-columns">
+
+            <div class="card">
+
+                <h2>Características e Talentos</h2>
+
+                <textarea id="features" rows="12" placeholder="Características de classe, raça, talentos..."></textarea>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>Idiomas e Proficiências</h2>
+
+                <textarea id="proficiencies" rows="12"
+                    placeholder="Idiomas, armas, armaduras, ferramentas..."></textarea>
+
+            </div>
+
+        </section>
+
+
+        <!-- PERSONALIDADE -->
+        <section class="card">
+
+            <h2>Personalidade</h2>
+
+            <div class="grid grid-2">
+
+                <div class="field">
+                    <label>Traços de personalidade</label>
+                    <textarea id="personality" rows="5"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>Ideais</label>
+                    <textarea id="ideals" rows="5"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>Vínculos</label>
+                    <textarea id="bonds" rows="5"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>Defeitos</label>
+                    <textarea id="flaws" rows="5"></textarea>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- HISTÓRIA -->
+        <section class="card">
+
+            <h2>História do Personagem</h2>
+
+            <textarea id="backstory" rows="12"></textarea>
+
+        </section>
+
+
+        <!-- MAGIAS -->
+        <section class="card">
+
+            <h2>Magias</h2>
+
+            <div class="grid grid-3">
+
+                <div class="field">
+                    <label>Habilidade de Conjuração</label>
+                    <select id="spellAbility">
+
+                        <option value="">Selecione</option>
+                        <option value="intelligence">Inteligência</option>
+                        <option value="wisdom">Sabedoria</option>
+                        <option value="charisma">Carisma</option>
+
+                    </select>
+                </div>
+
+                <div class="field">
+
+                    <label>CD das Magias</label>
+
+                    <div class="calculated" id="spellSaveDC">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="field">
+
+                    <label>Bônus de Ataque Mágico</label>
+
+                    <div class="calculated" id="spellAttack">
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <h3 class="subheading">Lista de Magias</h3>
+
+            <textarea id="spells" rows="15"
+                placeholder="Truques:&#10;&#10;1º nível:&#10;&#10;2º nível:&#10;&#10;3º nível:&#10;&#10;4º nível:&#10;&#10;5º nível:"></textarea>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Ficha D&D 5e — Projeto pessoal</p>
+    </footer>
+
+    <script src="./Diretorio/js/ficha.js"></script>
+
+</body>
+</html>
