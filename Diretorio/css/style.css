@@ -3,16 +3,16 @@
 }
 
 :root {
-  --background: #e6e6e6;
-  --background-secondary: #d8d5d5;
-  --card: #f5f5f5;
-  --card-light: #ec7b7b;
+  --background: #171717;
+  --background-secondary: #202020;
+  --card: #262626;
+  --card-light: #303030;
   --border: #444;
-  --text: #080808;
-  --text-secondary: #2e2e2e;
+  --text: #f2f2f2;
+  --text-secondary: #bdbdbd;
   --accent: #b52a2a;
   --accent-dark: #7d1d1d;
-  --input: #868585;
+  --input: #171717;
 }
 
 body {
@@ -39,7 +39,6 @@ body {
 }
 
 .topbar h1 {
-  color: #fff;
   margin: 0;
   font-family: Georgia, serif;
 }
@@ -221,7 +220,7 @@ select:focus {
   font-size: 28px;
   font-weight: bold;
 
-  color: --text-secondary;
+  color: #fff;
 }
 
 /* COMBATE */
@@ -466,7 +465,7 @@ footer {
 
   overflow: hidden;
 
-  background: linear-gradient(135deg, #c7c5c5, #242424);
+  background: linear-gradient(135deg, #171717, #303030);
 
   border: 2px solid var(--border);
   border-radius: 8px;
