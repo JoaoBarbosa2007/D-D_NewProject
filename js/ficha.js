@@ -351,3 +351,26 @@ document.getElementById("clearBtn").addEventListener("click", clearCharacter);
 loadCharacter();
 
 updateAll();
+// ============================================================
+// MENU LATERAL / ABAS DA FICHA
+// ============================================================
+
+const sideLinks = document.querySelectorAll(".side-link");
+const tabPanels = document.querySelectorAll(".tab-panel");
+
+function openTab(tabName) {
+  sideLinks.forEach((link) => {
+    link.classList.toggle("active", link.dataset.tab === tabName);
+  });
+
+  tabPanels.forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.tabPanel === tabName);
+  });
+
+  // Mantém o usuário no topo da seção ao trocar de aba.
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+sideLinks.forEach((link) => {
+  link.addEventListener("click", () => openTab(link.dataset.tab));
+});
