@@ -55,6 +55,9 @@ body {
   background: var(--panel);
   color: #fff;
 }
+.title {
+  color: #d20000
+}
 .home {
   max-width: 1200px;
   margin: 0 auto;
