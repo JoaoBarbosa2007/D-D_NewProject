@@ -1,62 +1,63 @@
 <!doctype html>
 
 <html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link href="./css/ficha.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link href="./img/icon.png" rel="icon" type="image/x-icon" />
+    <title>D&amp;D - Diário de Bordo</title>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <link href="./css/ficha.css" rel="stylesheet" />
-  <link rel="stylesheet" href="./css/main.css" />
-  <link href="./img/icon.png" rel="icon" type="image/x-icon" />
-  <title>D&amp;D - Diário de Bordo</title>
-</head>
-
-<body>
-  <header class="site-header topbar">
-    <a class="brand" href="./index.html"><span class="title">D&D Diário de Bordo</span></a>
-    <nav class="site-nav">
-      <a href="./index.html">Início</a><a class="active" href="./carregarFicha.html">Ficha</a>
-    </nav>
-    <button aria-label="Abrir menu" class="menu-toggle" id="menuToggle" type="button">
-      ☰
-    </button>
-    <div class="top-actions">
+  <body>
+    <header class="site-header topbar">
+      <a class="brand" href="./index.html"
+        ><span class="title">D&D Diário de Bordo</span></a
+      >
       <nav class="site-nav">
-        <button class="danger" id="DeleteBtn" type="button">Deletar</button>
+        <a href="./index.html">Início</a
+        ><a class="active" href="./carregarFicha.html">Ficha</a>
       </nav>
-    </div>
-  </header>
-  <main class="characters-page">
-    <div class="characters-header">
-      <div>
-        <span class="eyebrow">Diário de Bordo</span>
-        <h1>Minhas Fichas</h1>
-        <p>Selecione um personagem para continuar sua aventura.</p>
+      <button
+        aria-label="Abrir menu"
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+      >
+        ☰
+      </button>
+      <div class="top-actions">
+        <nav class="site-nav">
+          <button class="danger" id="DeleteBtn" type="button">Deletar</button>
+        </nav>
+      </div>
+    </header>
+    <main class="characters-page">
+      <div class="characters-header">
+        <div>
+          <h1>Minhas Fichas</h1>
+          <p>Selecione um personagem para continuar sua aventura.</p>
+        </div>
+
+        <a class="button" href="./ficha.html"> + Criar personagem </a>
       </div>
 
-      <a class="button" href="./ficha.html">
-        + Criar personagem
-      </a>
-    </div>
+      <section class="characters-grid" id="charactersGrid">
+        <!-- Os cards serão criados pelo JavaScript -->
+      </section>
 
-    <section class="characters-grid" id="charactersGrid">
-      <!-- Os cards serão criados pelo JavaScript -->
-    </section>
+      <div class="empty-characters" id="emptyCharacters">
+        <h2>Nenhuma ficha encontrada</h2>
+        <p>Crie seu primeiro personagem para começar.</p>
 
-    <div class="empty-characters" id="emptyCharacters">
-      <h2>Nenhuma ficha encontrada</h2>
-      <p>Crie seu primeiro personagem para começar.</p>
-
-      <a class="button" href="./ficha.html">
-        Criar personagem
-      </a>
-    </div>
-  </main>
-  <footer>
-    <p>Ficha D&amp;D 5e — Projeto pessoal</p>
-  </footer>
-  <script src="./js/main.js"></script>
-  <script src="./js/carregarFicha.js"></script>
-</body>
-
+        <a class="button" href="./ficha.html"> Criar personagem </a>
+      </div>
+    </main>
+    <footer>
+      <p>Ficha D&amp;D 5e — Projeto pessoal</p>
+    </footer>
+    <script src="./js/main.js"></script>
+    <script src="./js/carregarFicha.js"></script>
+  </body>
 </html>

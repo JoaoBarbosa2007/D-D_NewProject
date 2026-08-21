@@ -1,76 +1,68 @@
 <!doctype html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="icon" href="./img/icon.png" type="image/x-icon" />
+    <title>D&D — Diário de Bordo</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./css/main.css" />
-  <link rel="icon" href="./img/icon.png" type="image/x-icon" />
-  <title>D&D — Diário de Bordo</title>
-</head>
-
-<body>
-  <header class="site-header">
+  <body>
+    <header class="site-header">
       <a class="brand" href="./index.html"
         ><span class="title">D&D Diário de Bordo</span></a
       >
-    <nav class="site-nav">
-      <a class="active" href="./index.html">Início</a>
-      <a href="./carregarFicha.html">Fichas</a>
-    </nav>
-  </header>
-  <main class="home">
-    <section class="hero"></section>
-    <section class="image-carousel">
-      <div class="carousel-track">
-        <div class="carousel-slide active">
-          <img src="./img/slides/imagem1.jpg" alt="Imagem de aventura D&D">
+      <nav class="site-nav">
+        <a class="active" href="./index.html">Início</a>
+        <a href="./carregarFicha.html">Fichas</a>
+      </nav>
+    </header>
+    <main class="home">
+      <section class="hero"></section>
+      <section class="image-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide active">
+            <img src="./img/slides/imagem1.jpg" alt="Imagem de aventura D&D" />
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./img/slides/imagem2.jpg" alt="Imagem de aventura D&D" />
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./img/slides/imagem3.jpg" alt="Imagem de aventura D&D" />
+          </div>
         </div>
 
-        <div class="carousel-slide">
-          <img src="./img/slides/imagem2.jpg" alt="Imagem de aventura D&D">
+        <button class="carousel-button carousel-prev" type="button">❮</button>
+
+        <button class="carousel-button carousel-next" type="button">❯</button>
+
+        <div class="carousel-indicators">
+          <button class="carousel-indicator active" type="button"></button>
+          <button class="carousel-indicator" type="button"></button>
+          <button class="carousel-indicator" type="button"></button>
         </div>
-
-        <div class="carousel-slide">
-          <img src="./img/slides/imagem3.jpg" alt="Imagem de aventura D&D">
-        </div>
-      </div>
-
-      <button class="carousel-button carousel-prev" type="button">
-        ❮
-      </button>
-
-      <button class="carousel-button carousel-next" type="button">
-        ❯
-      </button>
-
-      <div class="carousel-indicators">
-        <button class="carousel-indicator active" type="button"></button>
-        <button class="carousel-indicator" type="button"></button>
-        <button class="carousel-indicator" type="button"></button>
-      </div>
-    </section>
-    <section class="feature-grid">
-      <article class="feature">
-        <h2>Ficha completa</h2>
-        <p>Campos organizados para os principais dados do personagem.</p>
-      </article>
-      <article class="feature">
-        <h2>Organização de Campanhas</h2>
-        <p>
-          Modificadores, unifique e gerencie suas campanhas
-        </p>
-      </article>
-      <article class="feature">
-        <h2>Fácil acesso</h2>
-        <p>Acesse seus personagens de qualquer lugar</p>
-      </article>
-    </section>
-  </main>
-  <footer>
-    <p>Ficha D&D 5e — Projeto pessoal</p>
-  </footer>
-  <script src="./js/main.js"></script>
-</body>
-
+      </section>
+      <section class="feature-grid">
+        <article class="feature">
+          <h2>Ficha completa</h2>
+          <p>Campos organizados para os principais dados do personagem.</p>
+        </article>
+        <article class="feature">
+          <h2>Organização de Campanhas</h2>
+          <p>Modificadores, unifique e gerencie suas campanhas</p>
+        </article>
+        <article class="feature">
+          <h2>Fácil acesso</h2>
+          <p>Acesse seus personagens de qualquer lugar</p>
+        </article>
+      </section>
+    </main>
+    <footer>
+      <p>Ficha D&D 5e — Projeto pessoal</p>
+    </footer>
+    <script src="./js/main.js"></script>
+  </body>
 </html>

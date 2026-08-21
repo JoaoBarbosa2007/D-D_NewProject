@@ -737,9 +737,9 @@ function setupNumberInputs() {
     // POSICIONAMENTO
     // ------------------------------------------------------
 
-    container.insertBefore(increaseButton, input);
+    container.insertBefore(decreaseButton, input);
 
-    container.appendChild(decreaseButton);
+    container.appendChild(increaseButton);
 
     // ------------------------------------------------------
     // AUMENTAR
