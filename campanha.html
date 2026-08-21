@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/campanha.css" />
+    <link rel="icon" href="./img/icon.png" type="image/x-icon" />
+    <title>D&D — Nova Campanha</title>
+  </head>
+
+  <body>
+    <header class="site-header topbar">
+      <a class="brand" href="./index.html"
+        ><span class="title">D&D Diário de Bordo</span></a
+      >
+      <nav class="site-nav">
+        <a href="./index.html">Início</a>
+        <a href="./carregarFicha.html">Fichas</a>
+        <a href="./carregarCampanha.html">Campanhas</a>
+      </nav>
+      <div class="top-actions">
+        <button class="danger" id="cancelCampaignBtn" type="button">
+          Cancelar
+        </button>
+        <button id="saveCampaignBtn" type="button">Salvar campanha</button>
+      </div>
+    </header>
+
+    <main class="campaign-page">
+      <div class="campaign-header">
+        <div>
+          <span class="eyebrow">D&D 5e</span>
+          <h1>Nova campanha</h1>
+          <p>
+            Monte a identidade da aventura e defina os agentes que participarão
+            dela.
+          </p>
+        </div>
+      </div>
+
+      <form id="campaignForm" class="campaign-layout">
+        <section class="campaign-main">
+          <div class="campaign-card">
+            <div class="section-heading">
+              <div>
+                <h2>Informações da campanha</h2>
+                <p>
+                  Esses dados serão exibidos para quem encontrar a campanha.
+                </p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="campaignName">Nome da campanha</label>
+              <input
+                id="campaignName"
+                name="campaignName"
+                type="text"
+                maxlength="80"
+                placeholder="Ex.: As Cinzas de Valória"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <label for="campaignDescription">Descrição</label>
+              <textarea
+                id="campaignDescription"
+                name="campaignDescription"
+                maxlength="600"
+                rows="6"
+                placeholder="Conte um pouco sobre o mundo, objetivo ou início da aventura..."
+              ></textarea>
+              <small id="descriptionCounter">0 / 600</small>
+            </div>
+          </div>
+
+          <div class="campaign-card">
+            <div class="section-heading">
+              <div>
+                <h2>Agentes</h2>
+                <p>
+                  Adicione os jogadores, personagens ou outros agentes da
+                  campanha.
+                </p>
+              </div>
+            </div>
+
+            <div class="agent-add">
+              <input
+                id="agentName"
+                type="text"
+                maxlength="60"
+                placeholder="Nome do agente"
+              />
+              <select id="agentRole">
+                <option value="Jogador">Jogador</option>
+                <option value="Mestre">Mestre</option>
+                <option value="NPC">NPC</option>
+                <option value="Outro">Outro</option>
+              </select>
+              <button
+                class="button secondary-button"
+                id="addAgentBtn"
+                type="button"
+              >
+                Adicionar
+              </button>
+            </div>
+
+            <div class="agents-list" id="agentsList">
+              <div class="agents-empty" id="agentsEmpty">
+                Nenhum agente adicionado ainda.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="campaign-sidebar">
+          <div class="campaign-card">
+            <div class="section-heading">
+              <div>
+                <h2>Capa</h2>
+                <p>Escolha uma imagem para representar a campanha.</p>
+              </div>
+            </div>
+
+            <div class="cover-preview">
+              <img
+                id="coverPreview"
+                src="./img/slides/imagem1.jpg"
+                alt="Capa da campanha"
+              />
+            </div>
+
+            <div class="cover-options" id="coverOptions">
+              <button
+                type="button"
+                class="cover-option selected"
+                data-cover="./img/slides/imagem1.jpg"
+              >
+                <img src="./img/slides/imagem1.jpg" alt="Capa 1" />
+              </button>
+              <button
+                type="button"
+                class="cover-option"
+                data-cover="./img/slides/imagem2.jpg"
+              >
+                <img src="./img/slides/imagem2.jpg" alt="Capa 2" />
+              </button>
+              <button
+                type="button"
+                class="cover-option"
+                data-cover="./img/slides/imagem3.jpg"
+              >
+                <img src="./img/slides/imagem3.jpg" alt="Capa 3" />
+              </button>
+            </div>
+
+            <label class="upload-cover" for="coverUpload"
+              >Escolher imagem do computador</label
+            >
+            <input id="coverUpload" type="file" accept="image/*" hidden />
+          </div>
+
+          <div class="campaign-card campaign-key-card">
+            <div class="section-heading">
+              <div>
+                <h2>Chave da campanha</h2>
+                <p>Gerada automaticamente ao salvar.</p>
+              </div>
+            </div>
+            <div class="campaign-key-preview" id="campaignKeyPreview">
+              Será gerada ao salvar
+            </div>
+            <small
+              >Compartilhe esta chave com os jogadores para que eles possam
+              entrar na campanha.</small
+            >
+          </div>
+        </aside>
+      </form>
+    </main>
+
+    <footer><p>Ficha D&amp;D 5e — Projeto pessoal</p></footer>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/campanha.js"></script>
+  </body>
+</html>

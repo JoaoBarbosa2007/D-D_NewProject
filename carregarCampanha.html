@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/campanha.css" />
+    <link rel="icon" href="./img/icon.png" type="image/x-icon" />
+    <title>D&D — Campanhas</title>
+  </head>
+
+  <body>
+    <header class="site-header topbar">
+      <a class="brand" href="./index.html"
+        ><span class="title">D&D Diário de Bordo</span></a
+      >
+      <nav class="site-nav">
+        <a href="./index.html">Início</a>
+        <a href="./carregarFicha.html">Fichas</a>
+        <a class="active" href="./carregarCampanha.html">Campanhas</a>
+      </nav>
+    </header>
+
+    <main class="campaign-page">
+      <div class="characters-header">
+        <div>
+          <h1>Minhas Campanhas</h1>
+          <p>Selecione uma campanha para continuar sua aventura.</p>
+        </div>
+        <a class="button" href="campanha.html">+ Criar campanha</a>
+      </div>
+
+      <section class="campaign-grid" id="campaignGrid"></section>
+
+      <div class="empty-characters" id="emptyCampaigns">
+        <h2>Nenhuma campanha encontrada</h2>
+        <p>Crie sua primeira campanha para começar.</p>
+        <a class="button" href="campanha.html">Criar campanha</a>
+      </div>
+    </main>
+
+    <footer><p>Ficha D&amp;D 5e — Projeto pessoal</p></footer>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/carregarCampanha.js"></script>
+  </body>
+</html>

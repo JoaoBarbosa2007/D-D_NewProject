@@ -478,3 +478,85 @@ footer {
     text-align: center;
   }
 }
+/* ============================================================
+   BOTÕES DO CABEÇALHO DA CAMPANHA
+   ============================================================ */
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Estilo geral dos botões */
+.top-actions button {
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  background: var(--accent);
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* Efeito ao passar o mouse */
+.top-actions button:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent);
+}
+
+/* Efeito de clique */
+.top-actions button:active {
+  transform: scale(0.97);
+}
+
+/* Botão cancelar */
+.top-actions .danger {
+  background: transparent;
+  border-color: #7d1d1d;
+  color: #e06b6b;
+}
+
+/* Hover do cancelar */
+.top-actions .danger:hover {
+  background: #7d1d1d;
+  border-color: #a32626;
+  color: #fff;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
+@media (max-width: 700px) {
+  .site-header {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .top-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 450px) {
+  .top-actions {
+    width: 100%;
+  }
+
+  .top-actions button {
+    flex: 1;
+    padding: 10px 12px;
+  }
+}
