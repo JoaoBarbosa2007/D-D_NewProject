@@ -56,7 +56,7 @@ body {
   color: #fff;
 }
 .title {
-  color: #d20000
+  color: #d20000;
 }
 .home {
   max-width: 1200px;
@@ -160,5 +160,321 @@ footer {
   }
   .hero-card {
     min-height: 200px;
+  }
+}
+/* ============================================================
+   CARROSSEL
+   ============================================================ */
+
+.image-carousel {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  margin-top: 50px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: 0 10px 30px #0005;
+}
+
+.carousel-track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Botões */
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #0009;
+  color: #fff;
+
+  border: 1px solid #ffffff33;
+  border-radius: 50%;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  z-index: 2;
+}
+
+.carousel-button:hover {
+  background: var(--accent);
+}
+
+.carousel-prev {
+  left: 18px;
+}
+
+.carousel-next {
+  right: 18px;
+}
+
+/* Indicadores */
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 8px;
+
+  z-index: 2;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+
+  padding: 0;
+
+  background: #ffffff66;
+  border: 1px solid #fff;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.carousel-indicator.active {
+  background: var(--accent);
+}
+
+/* Responsivo */
+
+@media (max-width: 750px) {
+  .image-carousel {
+    height: 280px;
+    margin-top: 35px;
+  }
+
+  .carousel-button {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+}
+/* ============================================================
+   PÁGINA DE FICHAS
+   ============================================================ */
+
+.characters-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.characters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+  margin-bottom: 35px;
+}
+
+.characters-header h1 {
+  margin: 8px 0;
+  font:
+    700 clamp(36px, 5vw, 58px)/1 Georgia,
+    serif;
+}
+
+.characters-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.characters-header .button {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   GRID
+   ============================================================ */
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ============================================================
+   CARD DO PERSONAGEM
+   ============================================================ */
+
+.character-card {
+  overflow: hidden;
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px #0004;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.character-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   FOTO
+   ============================================================ */
+
+.character-card-image {
+  width: 100%;
+  height: 280px;
+
+  background: var(--panel2);
+
+  overflow: hidden;
+}
+
+.character-card-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================
+   INFORMAÇÕES
+   ============================================================ */
+
+.character-card-content {
+  padding: 20px;
+}
+
+.character-card-content h2 {
+  margin: 0 0 10px;
+
+  font:
+    700 25px Georgia,
+    serif;
+}
+
+.character-card-info {
+  display: flex;
+  gap: 8px;
+
+  color: var(--muted);
+
+  font-size: 15px;
+}
+
+.character-card-info span {
+  color: #fff;
+}
+
+.character-card-actions {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.character-card-actions a,
+.character-card-actions button {
+  flex: 1;
+
+  margin: 0;
+
+  text-align: center;
+}
+
+/* ============================================================
+   QUANDO NÃO EXISTIR FICHA
+   ============================================================ */
+
+.empty-characters {
+  display: none;
+
+  padding: 50px 20px;
+
+  text-align: center;
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.empty-characters h2 {
+  margin-top: 0;
+
+  font-family: Georgia, serif;
+}
+
+.empty-characters p {
+  color: var(--muted);
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .characters-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .characters-page {
+    padding: 40px 16px;
+  }
+
+  .characters-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .characters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .characters-header .button {
+    width: 100%;
+    text-align: center;
   }
 }
