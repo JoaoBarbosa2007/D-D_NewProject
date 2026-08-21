@@ -67,7 +67,6 @@ input[type="checkbox"] {
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 5px 20px #0003;
@@ -518,7 +517,6 @@ footer {
   top: 95px;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 10px;
   padding: 14px;
   box-shadow: 0 5px 20px #0003;
 }

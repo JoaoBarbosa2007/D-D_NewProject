@@ -1,0 +1,247 @@
+HTML:
+<div class="status-container">
+
+    <!-- VIDA -->
+    <div class="status">
+        <span class="status-title">VIDA</span>
+
+        <div class="status-bar" data-current="25" data-max="34">
+
+            <div class="status-fill vida"></div>
+
+            <button class="status-btn decrease-big">«</button>
+            <button class="status-btn decrease">‹</button>
+
+            <span class="status-value">25/34</span>
+
+            <button class="status-btn increase">›</button>
+            <button class="status-btn increase-big">»</button>
+
+        </div>
+    </div>
+
+
+    <!-- SANIDADE -->
+    <div class="status">
+        <span class="status-title">SANIDADE</span>
+
+        <div class="status-bar" data-current="18" data-max="18">
+
+            <div class="status-fill sanidade"></div>
+
+            <button class="status-btn decrease-big">«</button>
+            <button class="status-btn decrease">‹</button>
+
+            <span class="status-value">18/18</span>
+
+            <button class="status-btn increase">›</button>
+            <button class="status-btn increase-big">»</button>
+
+        </div>
+    </div>
+
+
+    <!-- ESFORÇO -->
+    <div class="status">
+        <span class="status-title">ESFORÇO</span>
+
+        <div class="status-bar" data-current="9" data-max="9">
+
+            <div class="status-fill esforco"></div>
+
+            <button class="status-btn decrease-big">«</button>
+            <button class="status-btn decrease">‹</button>
+
+            <span class="status-value">9/9</span>
+
+            <button class="status-btn increase">›</button>
+            <button class="status-btn increase-big">»</button>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="status.js"></script>
+
+CSS:
+.status-container {
+    width: 275px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status {
+    width: 100%;
+}
+
+.status-title {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #aaa;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.status-bar {
+    position: relative;
+
+    width: 100%;
+    height: 28px;
+
+    display: grid;
+    grid-template-columns: 28px 28px 1fr 28px 28px;
+    align-items: center;
+
+    background: #202020;
+    border: 1px solid #808080;
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.status-fill {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    transition: width 0.15s ease;
+}
+
+.status-fill.vida {
+    background-color: #b22222;
+}
+
+.status-fill.sanidade {
+    background-color: #8a2be2;
+}
+
+.status-fill.esforco {
+    background-color: #ff8811;
+}
+
+.status-btn {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    color: white;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.status-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.status-btn:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.status-value {
+    position: relative;
+    z-index: 2;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    text-align: center;
+
+    user-select: none;
+}
+
+js:
+const statusBars = document.querySelectorAll(".status-bar");
+
+function atualizarStatus(statusBar, valor) {
+
+    const valorMaximo = Number(statusBar.dataset.max);
+
+    valor = Math.max(0, Math.min(valor, valorMaximo));
+
+    statusBar.dataset.current = valor;
+
+    const valorAtual = statusBar.querySelector(".status-value");
+    const preenchimento = statusBar.querySelector(".status-fill");
+
+    const porcentagem = (valor / valorMaximo) * 100;
+
+    valorAtual.textContent = `${valor}/${valorMaximo}`;
+
+    preenchimento.style.width = `${porcentagem}%`;
+}
+
+
+function alterarStatus(statusBar, quantidade) {
+
+    const valorAtual = Number(statusBar.dataset.current);
+
+    atualizarStatus(
+        statusBar,
+        valorAtual + quantidade
+    );
+}
+
+
+statusBars.forEach(statusBar => {
+
+    const botaoDiminuirGrande =
+        statusBar.querySelector(".decrease-big");
+
+    const botaoDiminuir =
+        statusBar.querySelector(".decrease");
+
+    const botaoAumentar =
+        statusBar.querySelector(".increase");
+
+    const botaoAumentarGrande =
+        statusBar.querySelector(".increase-big");
+
+
+    botaoDiminuirGrande.addEventListener("click", () => {
+        alterarStatus(statusBar, -5);
+    });
+
+
+    botaoDiminuir.addEventListener("click", () => {
+        alterarStatus(statusBar, -1);
+    });
+
+
+    botaoAumentar.addEventListener("click", () => {
+        alterarStatus(statusBar, 1);
+    });
+
+
+    botaoAumentarGrande.addEventListener("click", () => {
+        alterarStatus(statusBar, 5);
+    });
+
+
+    // Inicializa a barra
+    atualizarStatus(
+        statusBar,
+        Number(statusBar.dataset.current)
+    );
+});
