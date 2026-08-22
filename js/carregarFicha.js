@@ -1,27 +1,75 @@
 // ============================================================
-// CARREGAR FICHA
+// CARREGAR FICHAS
+// ============================================================
+// Agora o sistema trabalha com uma lista de fichas.
+// Cada ficha possui um ID próprio e sua própria imagem.
+// A chave dndActiveCharacterId informa qual ficha está aberta.
 // ============================================================
 
 const charactersGrid = document.getElementById("charactersGrid");
 const emptyCharacters = document.getElementById("emptyCharacters");
 
 // ============================================================
-// PEGAR DADOS SALVOS
+// ARMAZENAMENTO
 // ============================================================
 
-function getSavedCharacter() {
-  const savedCharacter = localStorage.getItem("dndCharacter");
+const CHARACTERS_KEY = "dndCharacters";
+const ACTIVE_CHARACTER_KEY = "dndActiveCharacterId";
 
-  if (!savedCharacter) {
-    return null;
+function getSavedCharacters() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CHARACTERS_KEY) || "[]");
+    return Array.isArray(saved) ? saved : [];
+  } catch (error) {
+    console.error("Erro ao carregar fichas:", error);
+    return [];
+  }
+}
+
+// Migra automaticamente a ficha antiga, caso exista.
+function migrateOldCharacter() {
+  const characters = getSavedCharacters();
+
+  if (characters.length > 0) {
+    return characters;
+  }
+
+  const oldCharacter = localStorage.getItem("dndCharacter");
+
+  if (!oldCharacter) {
+    return [];
   }
 
   try {
-    return JSON.parse(savedCharacter);
+    const data = JSON.parse(oldCharacter);
+
+    const migrated = [{
+      id: crypto.randomUUID ? crypto.randomUUID() : `character-${Date.now()}`,
+      data,
+      image: localStorage.getItem("dndCharacterImage") || "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }];
+
+    localStorage.setItem(CHARACTERS_KEY, JSON.stringify(migrated));
+    localStorage.setItem(ACTIVE_CHARACTER_KEY, migrated[0].id);
+
+    localStorage.removeItem("dndCharacter");
+    localStorage.removeItem("dndCharacterImage");
+
+    return migrated;
   } catch (error) {
-    console.error("Erro ao carregar a ficha:", error);
-    return null;
+    console.error("Erro ao migrar a ficha antiga:", error);
+    return [];
   }
+}
+
+function setActiveCharacter(id) {
+  localStorage.setItem(ACTIVE_CHARACTER_KEY, id);
+}
+
+function clearActiveCharacter() {
+  localStorage.removeItem(ACTIVE_CHARACTER_KEY);
 }
 
 // ============================================================
@@ -39,18 +87,19 @@ function escapeHtml(value) {
 // ============================================================
 
 function createCharacterCard(character) {
-  const image = localStorage.getItem("dndCharacterImage") || "./img/icon.png";
+  const data = character.data || character;
+
+  const image = character.image || "./img/icon.png";
 
   const name =
-    character.characterName || character.name || "Personagem sem nome";
+    data.characterName || data.name || "Personagem sem nome";
 
   const characterClass =
-    character.characterClass || character.class || "Classe não definida";
+    data.characterClass || data.class || "Classe não definida";
 
-  const level = character.level || "1";
+  const level = data.level || "1";
 
   const card = document.createElement("article");
-
   card.className = "character-card";
 
   card.innerHTML = `
@@ -62,7 +111,6 @@ function createCharacterCard(character) {
     </div>
 
     <div class="character-card-content">
-
       <h2>${escapeHtml(name)}</h2>
 
       <div class="character-card-info">
@@ -72,20 +120,22 @@ function createCharacterCard(character) {
       </div>
 
       <div class="character-card-actions">
-
-        <a
-          class="button"
-          href="./ficha.html"
+        <button
+          class="button open-character"
+          type="button"
+          data-id="${escapeHtml(character.id)}"
         >
           Abrir ficha
-        </a>
-
-        <button class="danger delete-character" type="button">
-          Excluir
         </button>
 
+        <button
+          class="danger delete-character"
+          type="button"
+          data-id="${escapeHtml(character.id)}"
+        >
+          Excluir
+        </button>
       </div>
-
     </div>
   `;
 
@@ -93,21 +143,31 @@ function createCharacterCard(character) {
 }
 
 // ============================================================
-// DELETAR FICHA
+// EXCLUIR FICHA
 // ============================================================
 
-function deleteCharacter() {
-  const character = getSavedCharacter();
+function deleteCharacter(id) {
+  const characters = getSavedCharacters();
+  const character = characters.find((item) => item.id === id);
 
-  const name =
-    character?.characterName || character?.name || "esta ficha";
+  if (!character) return;
 
-  const confirmed = confirm(`Deseja excluir "${name}"? Essa ação não pode ser desfeita.`);
+  const data = character.data || character;
+  const name = data.characterName || data.name || "esta ficha";
+
+  const confirmed = confirm(
+    `Deseja excluir "${name}"? Essa ação não pode ser desfeita.`,
+  );
 
   if (!confirmed) return;
 
-  localStorage.removeItem("dndCharacter");
-  localStorage.removeItem("dndCharacterImage");
+  const remaining = characters.filter((item) => item.id !== id);
+
+  localStorage.setItem(CHARACTERS_KEY, JSON.stringify(remaining));
+
+  if (localStorage.getItem(ACTIVE_CHARACTER_KEY) === id) {
+    clearActiveCharacter();
+  }
 
   renderCharacters();
 }
@@ -117,46 +177,53 @@ function deleteCharacter() {
 // ============================================================
 
 function renderCharacters() {
-  const character = getSavedCharacter();
+  const characters = migrateOldCharacter();
 
-  if (!character) {
-    charactersGrid.innerHTML = "";
+  charactersGrid.innerHTML = "";
 
+  if (!characters.length) {
     emptyCharacters.style.display = "block";
-
     return;
   }
 
   emptyCharacters.style.display = "none";
 
-  charactersGrid.innerHTML = "";
-
-  const card = createCharacterCard(character);
-
-  charactersGrid.appendChild(card);
+  characters.forEach((character) => {
+    charactersGrid.appendChild(createCharacterCard(character));
+  });
 
   bindCharacterActions();
 }
 
 // ============================================================
-// AÇÕES DO CARD
+// AÇÕES DOS CARDS
 // ============================================================
 
 function bindCharacterActions() {
+  document.querySelectorAll(".open-character").forEach((button) => {
+    button.addEventListener("click", () => {
+      setActiveCharacter(button.dataset.id);
+      window.location.href = "./ficha.html";
+    });
+  });
+
   document.querySelectorAll(".delete-character").forEach((button) => {
-    button.addEventListener("click", deleteCharacter);
+    button.addEventListener("click", () => {
+      deleteCharacter(button.dataset.id);
+    });
   });
 }
 
 // ============================================================
-// BOTÃO "DELETAR" DO CABEÇALHO
+// NOVA FICHA
 // ============================================================
+// Impede que clicar em "Criar personagem" abra a ficha anterior.
 
-const headerDeleteBtn = document.getElementById("DeleteBtn");
-
-if (headerDeleteBtn) {
-  headerDeleteBtn.addEventListener("click", deleteCharacter);
-}
+document.querySelectorAll('a[href="./ficha.html"]').forEach((link) => {
+  link.addEventListener("click", () => {
+    clearActiveCharacter();
+  });
+});
 
 // ============================================================
 // INICIALIZAÇÃO

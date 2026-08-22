@@ -46,8 +46,13 @@ function generateCampaignId() {
 }
 
 function campaignIdExists(id) {
-  const campaigns = JSON.parse(localStorage.getItem("dndCampaigns") || "[]");
-  return campaigns.some((campaign) => campaign.id === id);
+  let campaigns = [];
+  try {
+    campaigns = JSON.parse(localStorage.getItem("dndCampaigns") || "[]");
+  } catch (error) {
+    console.error("Erro ao ler campanhas:", error);
+  }
+  return (Array.isArray(campaigns) ? campaigns : []).some((campaign) => campaign.id === id);
 }
 
 // ------------------------------------------------------------
@@ -210,5 +215,9 @@ cancelCampaignBtn?.addEventListener("click", () => {
 // ------------------------------------------------------------
 // INICIALIZAÇÃO
 // ------------------------------------------------------------
+
+// A página campanha.html representa a criação de uma nova campanha.
+// A campanha existente é aberta pelo ID em carregarCampanha.html.
+localStorage.removeItem("dndActiveCampaignId");
 
 renderAgents();

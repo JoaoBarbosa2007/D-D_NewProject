@@ -466,7 +466,7 @@ if (imageUpload) {
 
       displayCharacterImage(imageData);
 
-      localStorage.setItem("dndCharacterImage", imageData);
+      // A imagem fica em memória na ficha atual e será salva junto com ela.\n      currentCharacterImage = imageData;
     };
 
     reader.readAsDataURL(file);
@@ -485,7 +485,7 @@ if (removeImage) {
       return;
     }
 
-    localStorage.removeItem("dndCharacterImage");
+    currentCharacterImage = "";
 
     if (imageUpload) {
       imageUpload.value = "";
@@ -493,6 +493,92 @@ if (removeImage) {
 
     displayCharacterImage(null);
   });
+}
+
+// ============================================================
+// ARMAZENAMENTO DE MÚLTIPLAS FICHAS
+// ============================================================
+
+const CHARACTERS_KEY = "dndCharacters";
+const ACTIVE_CHARACTER_KEY = "dndActiveCharacterId";
+
+let currentCharacterImage = "";
+
+function getCharacters() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CHARACTERS_KEY) || "[]");
+    return Array.isArray(saved) ? saved : [];
+  } catch (error) {
+    console.error("Erro ao ler as fichas:", error);
+    return [];
+  }
+}
+
+function generateCharacterId() {
+  if (crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+
+  return `character-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function getActiveCharacterId() {
+  return localStorage.getItem(ACTIVE_CHARACTER_KEY);
+}
+
+function getActiveCharacter() {
+  const id = getActiveCharacterId();
+
+  if (!id) {
+    return null;
+  }
+
+  return getCharacters().find((character) => character.id === id) || null;
+}
+
+function saveCharacters(characters) {
+  localStorage.setItem(CHARACTERS_KEY, JSON.stringify(characters));
+}
+
+// ============================================================
+// MIGRAÇÃO DA ESTRUTURA ANTIGA
+// ============================================================
+
+function migrateOldCharacter() {
+  const characters = getCharacters();
+
+  if (characters.length) {
+    return characters;
+  }
+
+  const oldCharacter = localStorage.getItem("dndCharacter");
+
+  if (!oldCharacter) {
+    return [];
+  }
+
+  try {
+    const data = JSON.parse(oldCharacter);
+
+    const migrated = [{
+      id: generateCharacterId(),
+      data,
+      image: localStorage.getItem("dndCharacterImage") || "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }];
+
+    saveCharacters(migrated);
+    localStorage.setItem(ACTIVE_CHARACTER_KEY, migrated[0].id);
+
+    localStorage.removeItem("dndCharacter");
+    localStorage.removeItem("dndCharacterImage");
+
+    return migrated;
+  } catch (error) {
+    console.error("Erro ao migrar a ficha antiga:", error);
+    return [];
+  }
 }
 
 // ============================================================
@@ -514,7 +600,42 @@ function saveCharacter() {
     }
   });
 
-  localStorage.setItem("dndCharacter", JSON.stringify(data));
+  const characters = migrateOldCharacter();
+  let activeId = getActiveCharacterId();
+  const now = new Date().toISOString();
+
+  // Se nenhuma ficha estiver aberta, cria uma nova.
+  if (!activeId) {
+    activeId = generateCharacterId();
+
+    characters.push({
+      id: activeId,
+      data,
+      image: currentCharacterImage || "",
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    localStorage.setItem(ACTIVE_CHARACTER_KEY, activeId);
+  } else {
+    const index = characters.findIndex((character) => character.id === activeId);
+
+    if (index === -1) {
+      characters.push({
+        id: activeId,
+        data,
+        image: currentCharacterImage || "",
+        createdAt: now,
+        updatedAt: now,
+      });
+    } else {
+      characters[index].data = data;
+      characters[index].image = currentCharacterImage || "";
+      characters[index].updatedAt = now;
+    }
+  }
+
+  saveCharacters(characters);
 
   alert("Ficha salva!");
 }
@@ -524,32 +645,29 @@ function saveCharacter() {
 // ============================================================
 
 function loadCharacter() {
-  const saved = localStorage.getItem("dndCharacter");
+  let characters = migrateOldCharacter();
+  const activeId = getActiveCharacterId();
 
-  if (!saved) {
-    const savedImage = localStorage.getItem("dndCharacterImage");
-
-    displayCharacterImage(savedImage);
-
+  // Sem ID ativo = página de criação de uma nova ficha.
+  if (!activeId) {
+    currentCharacterImage = "";
+    displayCharacterImage(null);
     return;
   }
 
-  let data;
+  const character = characters.find((item) => item.id === activeId);
 
-  try {
-    data = JSON.parse(saved);
-  } catch (error) {
-    console.error("Erro ao carregar a ficha:", error);
-
+  if (!character) {
+    localStorage.removeItem(ACTIVE_CHARACTER_KEY);
+    currentCharacterImage = "";
+    displayCharacterImage(null);
     return;
   }
+
+  const data = character.data || character;
 
   document.querySelectorAll("input, textarea, select").forEach((element) => {
-    if (!element.id) {
-      return;
-    }
-
-    if (!(element.id in data)) {
+    if (!element.id || !(element.id in data)) {
       return;
     }
 
@@ -560,31 +678,61 @@ function loadCharacter() {
     }
   });
 
-  const savedImage = localStorage.getItem("dndCharacterImage");
-
-  displayCharacterImage(savedImage);
+  currentCharacterImage = character.image || "";
+  displayCharacterImage(currentCharacterImage);
 
   updateAllCalculations();
 }
 
 // ============================================================
-// LIMPAR FICHA
+// LIMPAR / EXCLUIR A FICHA ATUAL
 // ============================================================
 
 function clearCharacter() {
-  const confirmation = confirm(
-    "Tem certeza que deseja apagar todos os dados da ficha?",
-  );
+  const activeId = getActiveCharacterId();
 
-  if (!confirmation) {
+  // Em uma ficha ainda não salva, apenas limpa os campos.
+  if (!activeId) {
+    const confirmation = confirm(
+      "Tem certeza que deseja limpar todos os campos desta nova ficha?",
+    );
+
+    if (!confirmation) return;
+
+    document.querySelectorAll("input, textarea, select").forEach((element) => {
+      if (element.type === "checkbox") {
+        element.checked = false;
+      } else {
+        element.value = "";
+      }
+    });
+
+    currentCharacterImage = "";
+    displayCharacterImage(null);
+    updateAllCalculations();
     return;
   }
 
-  localStorage.removeItem("dndCharacter");
+  const characters = getCharacters();
+  const character = characters.find((item) => item.id === activeId);
 
-  localStorage.removeItem("dndCharacterImage");
+  if (!character) return;
 
-  location.reload();
+  const data = character.data || character;
+  const name = data.characterName || data.name || "esta ficha";
+
+  const confirmation = confirm(
+    `Deseja excluir "${name}"? Essa ação não pode ser desfeita.`,
+  );
+
+  if (!confirmation) return;
+
+  const remaining = characters.filter((item) => item.id !== activeId);
+
+  saveCharacters(remaining);
+  localStorage.removeItem(ACTIVE_CHARACTER_KEY);
+
+  window.location.href = "./carregarFicha.html";
 }
 
 // ============================================================
