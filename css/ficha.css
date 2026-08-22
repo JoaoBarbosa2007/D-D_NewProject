@@ -636,29 +636,86 @@ footer {
   }
 }
 
+/* Fora do mobile, ícone e fundo ficam sempre escondidos */
+.side-menu-fab,
+.side-menu-backdrop {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .sheet {
     width: min(100% - 24px, 760px);
     grid-template-columns: 1fr;
   }
 
+  /* O menu lateral vira uma gaveta retrátil, escondida por padrão */
   .side-menu {
-    position: sticky;
-    top: 76px;
-    z-index: 90;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    width: min(82%, 300px);
+    height: 100dvh;
+    border-radius: 0 12px 12px 0;
+    overflow-y: auto;
+    transform: translateX(-105%);
+    transition: transform 0.25s ease;
+  }
+
+  .side-menu.open {
+    transform: translateX(0);
   }
 
   .side-menu-header {
-    cursor: pointer;
+    cursor: default;
   }
 
   .side-nav {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
   }
 
   .side-link {
     justify-content: flex-start;
+  }
+
+  /* Ícone fixo que abre/fecha o menu */
+  .side-menu-fab {
+    display: flex;
+    position: fixed;
+    left: 14px;
+    top: 9px;
+    z-index: 150;
+    width: 46px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    box-shadow: 0 6px 18px #0007;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .side-menu-fab:hover {
+    background: var(--accent-dark);
+  }
+
+  /* Fundo escurecido atrás do menu aberto */
+  .side-menu-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 190;
+    background: #0009;
+  }
+
+  .side-menu-backdrop.visible {
+    display: block;
   }
 }
 

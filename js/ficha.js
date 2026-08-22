@@ -666,6 +666,34 @@ const sideLinks = document.querySelectorAll(".side-link");
 
 const tabPanels = document.querySelectorAll(".tab-panel");
 
+// ============================================================
+// MENU LATERAL (GAVETA NO MOBILE)
+// ============================================================
+
+const sideMenu = document.getElementById("sideMenu");
+const sideMenuFab = document.getElementById("sideMenuFab");
+const sideMenuBackdrop = document.getElementById("sideMenuBackdrop");
+
+function openSideMenu() {
+  if (!sideMenu) return;
+  sideMenu.classList.add("open");
+  sideMenuBackdrop?.classList.add("visible");
+}
+
+function closeSideMenu() {
+  if (!sideMenu) return;
+  sideMenu.classList.remove("open");
+  sideMenuBackdrop?.classList.remove("visible");
+}
+
+function toggleSideMenu() {
+  if (!sideMenu) return;
+  sideMenu.classList.contains("open") ? closeSideMenu() : openSideMenu();
+}
+
+sideMenuFab?.addEventListener("click", toggleSideMenu);
+sideMenuBackdrop?.addEventListener("click", closeSideMenu);
+
 function openTab(tabName) {
   sideLinks.forEach((link) => {
     link.classList.toggle("active", link.dataset.tab === tabName);
@@ -684,6 +712,7 @@ function openTab(tabName) {
 sideLinks.forEach((link) => {
   link.addEventListener("click", () => {
     openTab(link.dataset.tab);
+    closeSideMenu();
   });
 });
 // ============================================================
